@@ -9,7 +9,7 @@ class GlobalChat(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         try:
-            self.conn = sqlite3.connect("Discord\database\settings.db")
+            self.conn = sqlite3.connect("database\settings.db")
         except Exception as e:
             print(e)
 
@@ -42,8 +42,8 @@ class GlobalChat(commands.Cog):
                 c.execute('''SELECT CHANID FROM globalchat''')
                 l = c.fetchall()
                 print(l)
-                th = list(l[0])
-                print(th)
+                l = list(l)
+                print(l)
 '''                    for ids in :
                         if message.channel.id in th:
                             if not message.content:

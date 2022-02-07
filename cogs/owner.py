@@ -9,7 +9,7 @@ class OwnersOnly(commands.Cog):
     def __init__(self, bot) -> None:
         self.bot = bot
         try:
-            self.conn = sqlite3.connect("Discord\database\settings.db")
+            self.conn = sqlite3.connect("database\settings.db")
         except Exception as e:
             print(e)
 
@@ -42,8 +42,20 @@ class OwnersOnly(commands.Cog):
         except Exception as e:
             print(f"Fault: {e}")
     
-        
-
+    @commands.command()
+    @commands.check(commands.is_owner())
+    async def presence(self, ctx, presence:str, name:str, twitch_url = None):
+        if presence.lower()=="game":
+            await self.bot.change_presence(activity=discord.Game(name=name))
+        elif presence.lower() == "stream" and twitch_url is not None:
+        # Setting `Streaming ` status
+            await self.bot.change_presence(activity=discord.Streaming(name=name, url=twitch_url))
+        elif presence.lower() == "listen":
+        # Setting `Listening ` status
+            await self.bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=name))
+        elif presence.lower() =="watch":
+            #   Setting `Watching ` status
+            await self.bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=name))
 
 
 
