@@ -1,2 +1,2 @@
-# Falcon-discord-bot
-Falcon bot for my favorite discord servers
+Am waiting for epikcord.py off'l release. 
+Until then, no development
