@@ -2,15 +2,13 @@ import asyncio
 import json
 import discord
 import wavelink
-
+import config
 from discord.ext import commands
 
 
 class Music(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
-        with open("../config.json") as f:
-            self._json = json.load(f)
         self.repeat = {}
         
     async def setup_hook(self):
@@ -20,9 +18,9 @@ class Music(commands.Cog):
         await self.bot.wait_until_ready()
         await wavelink.NodePool.create_node(
             bot = self.bot,
-            host = self._json["wavelink_config"]["wavelink_ip"],
-            port = int(self._json["wavelink_config"]["wavelink_port"]),
-            password =self._json["wavelink_config"]["wavelink_password"]
+            host = config.wavelink_ip,
+            port = config.wavelink_port,
+            password =config.wavelink_password
          )
 
     @commands.Cog.listener()
