@@ -7,7 +7,7 @@ class Helpme(commands.Cog):
         self.bot = bot
     
     @commands.group()
-    async def help(self,ctx):
+    async def help(self,interaction):
         helpEM = discord.Embed(title=f"Help command for THE SMART BOT hehe!",color=discord.Color.og_blurple())
         helpEM.add_field(name="💼 Moderation")
 
