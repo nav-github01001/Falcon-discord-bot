@@ -1,6 +1,7 @@
 import asyncio
+import json
 import discord
-
+import wavelink
 
 from discord.ext import commands
 
@@ -8,19 +9,21 @@ from discord.ext import commands
 class Music(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
+        with open("../config.json") as f:
+            self._json = json.load(f)
         self.repeat = {}
-
-        bot.loop.create_task(self.connect_nodes())
+        
+    async def setup_hook(self):
+        self.bot.loop.create_task(self.connect_nodes())
 
     async def connect_nodes(self):
         await self.bot.wait_until_ready()
-        # await wavelink.NodePool.create_node(
-        #    bot = self.bot,
-        #    host = '173.249.9.178',
-        #    port = 5074,
-        #    password ="EpikHostOnTop"
-
-        # )
+        await wavelink.NodePool.create_node(
+            bot = self.bot,
+            host = self._json["wavelink_config"]["wavelink_ip"],
+            port = int(self._json["wavelink_config"]["wavelink_port"]),
+            password =self._json["wavelink_config"]["wavelink_password"]
+         )
 
     @commands.Cog.listener()
     async def on_wavelink_node_ready(self, node: wavelink.Node):
@@ -39,13 +42,13 @@ class Music(commands.Cog):
         return total
 
     @commands.command()
-    async def play(self, interaction: commands.Context, *, search: wavelink.YouTubeTrack):
-        if not interaction.voice_client:
-            vc: wavelink.Player = await interaction.author.voice.channel.connect(
+    async def play(self, ctx:commands.Context, *, search:wavelink.YouTubeTrack):
+        if not ctx.voice_client:
+            vc: wavelink.Player = await ctx.author.voice.channel.connect(
                 cls=wavelink.Player
             )
         else:
-            vc: wavelink.Player = interaction.voice_client
+            vc: wavelink.Player = ctx.voice_client
         duration = search.duration
         title = search.title
         thumbnail = search.thumbnail
@@ -61,89 +64,89 @@ class Music(commands.Cog):
             description=f"Duration = {int(hours)} hours {int(minute)} minutes {int(seconds)} seconds",
         )
         pinfoem.set_image(url=thumbnail)
-        await interaction.response.send_message(embed=pinfoem)
+        await ctx.send(embed=pinfoem)
         while True:
-            if self.repeat[str(interaction.guild.id)]:
+            if self.repeat[str(ctx.guild.id)]:
                 if not vc.is_playing():
                     await asyncio.sleep(0.25)
                     await vc.play()
 
     @commands.command()
-    async def pause(self, interaction: commands.Context):
-        if not interaction.voice_client:
-            return await interaction.response.send_message("The bot is not connected to music channel")
+    async def pause(self, ctx: commands.Context):
+        if not ctx.voice_client:
+            return await ctx.send("The bot is not connected to music channel")
 
         else:
-            vc: wavelink.Player = interaction.voice_client
+            vc: wavelink.Player = ctx.voice_client
 
         await vc.pause()
-        await interaction.response.send_message("⏸️ **Paused music!**")
+        await ctx.send("⏸️ **Paused music!**")
 
     @commands.command()
-    async def resume(self, interaction: commands.Context):
-        if not interaction.voice_client:
-            return await interaction.response.send_message("The bot is not connected to music channel")
+    async def resume(self, ctx: commands.Context):
+        if not ctx.voice_client:
+            return await ctx.send("The bot is not connected to music channel")
 
         else:
-            vc: wavelink.Player = interaction.voice_client
+            vc: wavelink.Player = ctx.voice_client
 
         if vc.is_paused():
             await vc.resume()
-            await interaction.response.send_message("⏯️ **Resumed music!**")
+            await ctx.send("⏯️ **Resumed music!**")
         elif not vc.is_playing():
-            await interaction.response.send_message("VC is not playing anything")
+            await ctx.send("VC is not playing anything")
         else:
-            await interaction.response.send_message("The vc is already playing")
+            await ctx.send("The vc is already playing")
 
     @commands.command()
-    async def stop(self, interaction: commands.Context):
-        if not interaction.voice_client:
-            return await interaction.response.send_message("The bot is not connected to music channel")
+    async def stop(self, ctx: commands.Context):
+        if not ctx.voice_client:
+            return await ctx.send("The bot is not connected to music channel")
 
         else:
-            vc: wavelink.Player = interaction.voice_client
+            vc: wavelink.Player = ctx.voice_client
 
         if vc.is_playing():
             await vc.stop()
-            await interaction.response.send_message("🛑 **Stopped music!**")
+            await ctx.send("🛑 **Stopped music!**")
         else:
-            await interaction.response.send_message("🛑 Nothing is playing on VC")
+            await ctx.send("🛑 Nothing is playing on VC")
 
     @commands.command()
-    async def disconnect(self, interaction: commands.Context):
-        if not interaction.voice_client:
-            return await interaction.response.send_message("The bot is not connected to music channel")
+    async def disconnect(self, ctx: commands.Context):
+        if not ctx.voice_client:
+            return await ctx.send("The bot is not connected to music channel")
 
         else:
-            vc: wavelink.Player = interaction.voice_client
+            vc: wavelink.Player = ctx.voice_client
 
         if vc.is_connected():
             await vc.disconnect(force=True)
-            await interaction.response.send_message("🛑 **Disconnected from VC**")
+            await ctx.send("🛑 **Disconnected from VC**")
         else:
-            await interaction.response.send_message("❌ Bot already disconnected")
+            await ctx.send("❌ Bot already disconnected")
 
     @commands.command()
-    async def connect(self, interaction: commands.Context, voicec: discord.VoiceChannel = None):
+    async def connect(self, ctx: commands.Context, voicec: discord.VoiceChannel = None):
         if voicec == None:
-            if interaction.voice_client:
-                return await interaction.response.send_message("The bot is already connected to music channel")
+            if ctx.voice_client:
+                return await ctx.send("The bot is already connected to music channel")
             else:
 
-                await interaction.author.voice.channel.connect(cls=wavelink.Player)
+                await ctx.author.voice.channel.connect(cls=wavelink.Player)
 
         else:
             await voicec.connect(cls=wavelink.Player)
 
-    @commands.group()
-    async def loop(self, interaction: commands.Context):
-        if self.repeat[str(interaction.guild.id)]:
-            del self.repeat[str(interaction.guild.id)]
-            return await interaction.response.send_message("➰**Loop Stopped**")
+"""    @commands.group()
+    async def loop(self, ctx: discord.ctx):
+        if self.repeat[str(ctx.guild.id)]:
+            del self.repeat[str(ctx.guild.id)]
+            return await ctx.send("➰**Loop Stopped**")
         else:
-            self.repeat[str(interaction.guild.id)] = True
-            await interaction.response.send_message("➰ **Loop Started**")
+            self.repeat[str(ctx.guild.id)] = True
+            await ctx.send("➰ **Loop Started**")
+"""
 
-
-def setup(bot):
-    bot.add_cog(Music(bot))
+async def setup(bot):
+    await bot.add_cog(Music(bot))

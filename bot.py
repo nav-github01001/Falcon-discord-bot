@@ -11,7 +11,7 @@ handler = logging.FileHandler(filename='./EnderBot.log', encoding='utf-8', mode=
 handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
 
-COGS_LIST = ("cogs.owner","cogs.fun", "cogs.information", )
+COGS_LIST = ("cogs.owner","cogs.fun", "cogs.information", "cogs.music",)
 EXTENSION_LIST = ("jishaku",)
 with open("config.json") as f:
     _json = json.load(f)

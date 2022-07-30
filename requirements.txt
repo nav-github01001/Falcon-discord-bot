@@ -1,2 +1,4 @@
 git+https://github.com/Rapptz/discord.py
 pynacl 
+jishaku
+wavelink
