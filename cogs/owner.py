@@ -7,37 +7,37 @@ import asyncio
 
 
 class OwnersOnly(commands.Cog):
-    def __init__(self, bot) -> None:
-        self.bot = bot
+    def __init__(self, client) -> None:
+        self.client = client
         try:
             self.conn = sqlite3.connect("database\settings.db")
         except Exception as e:
             print(e)
 
     @commands.command()
-    @commands.check(commands.is_owner())
+    @commands.is_owner()
     async def unload(self, interaction, ext):
         try:
-            await self.bot.unload_extension("cogs." + ext)
+            await self.client.unload_extension("cogs." + ext)
             print("Unloaded")
         except Exception as e:
             print(f"Fault: {e}")
 
     @commands.command()
-    @commands.check(commands.is_owner())
-    async def load(self, interaction, ext):
+    @commands.is_owner()
+    async def load(self, ctx, ext):
         try:
-            await self.bot.load_extension("cogs." + ext)
+            await self.client.load_extension("cogs." + ext)
             print("loaded")
         except Exception as e:
             print(f"Fault: {e}")
 
     @commands.command()
-    @commands.check(commands.is_owner())
+    @commands.is_owner()
     async def reload(self, interaction, ext):
         try:
-            await self.bot.unload_extension("cogs." + ext)
-            await self.bot.load_extension("cogs." + ext)
+            await self.client.unload_extension("cogs." + ext)
+            await self.client.load_extension("cogs." + ext)
             await asyncio.sleep(0.5)
             print("REloaded")
         except Exception as e:

@@ -10,8 +10,8 @@ from discord.ui.view import View
 
 
 class Info(commands.Cog):
-    def __init__(self, bot: discord.Client) -> None:
-        self.bot = bot
+    def __init__(self, client: discord.Client) -> None:
+        self.client = client
         try:
             self.conn = sqlite3.connect("database\data.db")
         except Exception as e:
@@ -19,7 +19,7 @@ class Info(commands.Cog):
 
     @discord.app_commands.command(description="Measure the latency of the bot")
     async def ping(self, interaction):
-        await interaction.response.send_message(f"{round(self.bot.latency*1000)}ms")
+        await interaction.response.send_message(f"Latency since last heartbeat:{round(self.client.latency*1000)}ms")
 
     # alpha
     """@commands.command(aliases=["welcome"])

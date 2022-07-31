@@ -7,8 +7,8 @@ from discord.ext import commands
 
 
 class Music(commands.Cog):
-    def __init__(self, bot: commands.Bot) -> None:
-        self.bot = bot
+    def __init__(self, client: commands.Bot) -> None:
+        self.client = client
         self.repeat = {}
         
     async def setup_hook(self):

@@ -9,8 +9,8 @@ import aiohttp
 
 
 class Fun(commands.Cog):
-    def __init__(self, bot: discord.Client) -> None:
-        self.bot = bot
+    def __init__(self, client: discord.Client) -> None:
+        self.client = client
         """try:
             self.conn = sqlite3.connect("database\settings.db")
         except Exception as e:
