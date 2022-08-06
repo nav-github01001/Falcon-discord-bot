@@ -10,18 +10,9 @@ class Music(commands.Cog):
     def __init__(self, client: commands.Bot) -> None:
         self.client = client
         self.repeat = {}
-        
-    async def setup_hook(self):
-        self.bot.loop.create_task(self.connect_nodes())
 
-    async def connect_nodes(self):
-        await self.bot.wait_until_ready()
-        await wavelink.NodePool.create_node(
-            bot = self.bot,
-            host = config.wavelink_ip,
-            port = config.wavelink_port,
-            password =config.wavelink_password
-         )
+
+
 
     @commands.Cog.listener()
     async def on_wavelink_node_ready(self, node: wavelink.Node):
@@ -40,7 +31,7 @@ class Music(commands.Cog):
         return total
 
     @commands.command()
-    async def play(self, ctx:commands.Context, *, search:wavelink.YouTubeTrack):
+    async def play(self, ctx: commands.Context, *, search: wavelink.YouTubeTrack):
         if not ctx.voice_client:
             vc: wavelink.Player = await ctx.author.voice.channel.connect(
                 cls=wavelink.Player
@@ -136,6 +127,7 @@ class Music(commands.Cog):
         else:
             await voicec.connect(cls=wavelink.Player)
 
+
 """    @commands.group()
     async def loop(self, ctx: discord.ctx):
         if self.repeat[str(ctx.guild.id)]:
@@ -145,6 +137,7 @@ class Music(commands.Cog):
             self.repeat[str(ctx.guild.id)] = True
             await ctx.send("➰ **Loop Started**")
 """
+
 
 async def setup(bot):
     await bot.add_cog(Music(bot))

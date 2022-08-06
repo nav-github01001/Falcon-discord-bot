@@ -17,7 +17,7 @@ class Fun(commands.Cog):
             print(e)"""
 
     @discord.app_commands.command()
-    async def randomfacts(self, interaction:discord.Interaction):
+    async def randomfacts(self, interaction: discord.Interaction):
         async with aiohttp.ClientSession() as session:
             async with session.get(
                 "https://uselessfacts.jsph.pl/random.txt?language=en"
@@ -52,8 +52,6 @@ class Fun(commands.Cog):
         binary = int(binary, 2)
 
         await interaction.response.send_message(f"integer code is {binary}")
-
-
 
 
 async def setup(bot: discord.Client):
