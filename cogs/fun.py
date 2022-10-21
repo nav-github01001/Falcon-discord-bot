@@ -39,19 +39,19 @@ class Fun(commands.Cog):
         await interaction.response.send_message(embed=jke)
 
     @commands.group(aliases=["bin"], invoke_without_command=True)
-    async def binary(self, interaction, binary: int):
+    async def binary(self, ctx, binary: int):
         binary = bin(binary)
         binary = str(binary).removeprefix("0b")
-        await interaction.response.send_message(f"Binary code is {binary}")
+        await ctx.send(f"Binary code is {binary}")
 
     @binary.command()
-    async def integer(self, interaction, binary: int):
+    async def integer(self, ctx, binary: int):
         # convert binary to integer
         binary = bin(binary)
         binary = str(binary).removeprefix("0b")
         binary = int(binary, 2)
 
-        await interaction.response.send_message(f"integer code is {binary}")
+        await ctx.send(f"integer code is {binary}")
 
 
 async def setup(bot: discord.Client):

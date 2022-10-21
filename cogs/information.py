@@ -31,13 +31,7 @@ class Info(commands.Cog):
         AdminLink = Button(style=ButtonStyle.link, label="For administrators", url="https://discord.com/api/oauth2/authorize?client_id=923915598247915540&permissions=8&scope=bot%20applications.commands")
         NonAdminLink = Button(style=ButtonStyle.link, label="Recommended", url="https://discord.com/api/oauth2/authorize?client_id=923915598247915540&permissions=1110216543415&scope=bot%20applications.commands")
         view = View().add_item(AdminLink).add_item(NonAdminLink)
-        await ctx.send(embed =discord.Embed(title="Invite Me!", description="Here are the links to invite me", colour=discord.Colour(0xFFFFFF)),view=view)
-
-    @commands.hybrid_command()
-    async def welcome(self, ctx):
-        embed = discord.Embed(title="Welcome Message Manager", )
-        ...
-
+        await ctx.send(embed =discord.Embed(title="Invite Me!", description="", colour=discord.Colour(0xFFFFFF)),view=view)  # type: ignore
     # alpha
 
 

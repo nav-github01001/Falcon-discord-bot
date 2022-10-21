@@ -20,7 +20,6 @@ COGS_LIST = (
     "cogs.owner",
     "cogs.fun",
     "cogs.information",
-    "cogs.music",
     "cogs.falcondevel",
     "cogs.moderation",
 )
@@ -42,17 +41,6 @@ class FalconClient(commands.Bot):
         await context.send(embed=error)
         raise exception
 
-    async def connect_nodes(self):
-        self.nodepool = wavelink.NodePool()
-        await self.nodepool.create_node(
-            bot=self,
-            host=config.wavelink_ip,
-            port=config.wavelink_port,
-            password=config.wavelink_password,
-        )
-
-    async def setup_hook(self) -> None:
-        await self.loop.create_task(self.connect_nodes())
 
 intents = discord.Intents.all()
 client = FalconClient(intents=intents)
