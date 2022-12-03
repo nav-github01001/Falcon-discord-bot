@@ -36,10 +36,10 @@ class FalconClient(commands.Bot):
 
     async def on_command_error(self, context, exception:Exception) -> None:
         error = discord.Embed(
-            color=colorsigns.SignEnum.INFO, title="Error!", description=exception
+            color=colorsigns.SignEnum.DANGER, title="Error!", description=exception
         ).set_footer(text="If this occurs more often, contact support")
         await context.send(embed=error)
-        raise exception
+        
 
 
 intents = discord.Intents.all()

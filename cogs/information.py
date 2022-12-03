@@ -14,7 +14,7 @@ class Info(commands.Cog):
     def __init__(self, client: discord.Client) -> None:
         self.client = client
         try:
-            self.conn = sqlite3.connect("database\data.db")
+            self.conn = sqlite3.connect("./databases/data.db")
         except Exception as e:
             print(e)
 

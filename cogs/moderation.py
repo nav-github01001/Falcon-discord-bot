@@ -1,7 +1,7 @@
 from typing import Optional
 import datetime
-
-from EpikCord import Embed
+import sqlite3
+from discord import Embed
 from .utils import colorsigns, misc
 import discord
 from discord import app_commands
@@ -11,6 +11,10 @@ from discord.ext import commands
 class Moderation(commands.Cog):
     def __init__(self, client: commands.Bot) -> None:
         self.client = client
+        try:
+            self.conn = sqlite3.connect("./databases/settings.db")
+        except Exception as e:
+            print(e)
 
     @commands.hybrid_command()
     @app_commands.describe(
@@ -24,10 +28,9 @@ class Moderation(commands.Cog):
         self,
         ctx: commands.Context,
         member: discord.Member,
-        hours: Optional[int] = None,
-        minutes: Optional[int] = None,
-        seconds: Optional[int] = None,
-        *,
+        hours: Optional[int] = 0,
+        minutes: Optional[int] = 0,
+        seconds: Optional[int] = 0,
         reason: Optional[str] = None,
     ):
         """

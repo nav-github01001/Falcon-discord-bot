@@ -11,13 +11,9 @@ import aiohttp
 class Fun(commands.Cog):
     def __init__(self, client: discord.Client) -> None:
         self.client = client
-        """try:
-            self.conn = sqlite3.connect("database\settings.db")
-        except Exception as e:
-            print(e)"""
 
     @discord.app_commands.command()
-    async def randomfacts(self, interaction: discord.Interaction):
+    async def uselessfacts(self, interaction: discord.Interaction):
         async with aiohttp.ClientSession() as session:
             async with session.get(
                 "https://uselessfacts.jsph.pl/random.txt?language=en"
@@ -28,7 +24,7 @@ class Fun(commands.Cog):
         await interaction.response.send_message(embed=fqcts)
 
     @discord.app_commands.command()
-    async def joke(self, interaction):
+    async def dadjoke(self, interaction):
         async with aiohttp.ClientSession() as session:
             async with session.get(
                 "https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist&format=txt&type=single"
@@ -37,6 +33,7 @@ class Fun(commands.Cog):
                     rf = await rqst.text()
         jke = discord.Embed(title="A new joke has arrived", description=rf)
         await interaction.response.send_message(embed=jke)
+
 
     @commands.group(aliases=["bin"], invoke_without_command=True)
     async def binary(self, ctx, binary: int):

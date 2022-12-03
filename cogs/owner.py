@@ -9,11 +9,7 @@ import asyncio
 class OwnersOnly(commands.Cog):
     def __init__(self, client) -> None:
         self.client = client
-        try:
-            self.conn = sqlite3.connect("database\settings.db")
-        except Exception as e:
-            print(e)
-
+        
     @commands.command()
     @commands.is_owner()
     async def unload(self, interaction, ext):
