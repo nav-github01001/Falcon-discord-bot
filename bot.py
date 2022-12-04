@@ -20,7 +20,6 @@ COGS_LIST = (
     "cogs.owner",
     "cogs.fun",
     "cogs.information",
-    "cogs.falcondevel",
     "cogs.moderation",
 )
 EXTENSION_LIST = ("jishaku",)
@@ -31,7 +30,7 @@ class FalconClient(commands.Bot):
         super().__init__(
             intents=intents,
             command_prefix=commands.when_mentioned_or("!?"),
-            disable_help=True,
+            help_command=None,
         )
 
     async def on_command_error(self, context, exception:Exception) -> None:
