@@ -13,11 +13,6 @@ from discord.ui import View,Button
 class Info(commands.Cog):
     def __init__(self, client: discord.Client) -> None:
         self.client = client
-        try:
-            self.conn = sqlite3.connect("./databases/data.db")
-        except Exception as e:
-            print(e)
-
     @discord.app_commands.command(description="Measure the latency of the bot")
     async def ping(self, interaction:discord.Interaction):
         await interaction.response.send_message(
@@ -25,7 +20,7 @@ class Info(commands.Cog):
             ephemeral=True,
         )
     
-    @commands.hybrid_command()
+    @commands.hybrid_command(description="Invite this bot to your server")
     async def invite(self, ctx:commands.Context):
         
         AdminLink = Button(style=ButtonStyle.link, label="For administrators", url="https://discord.com/api/oauth2/authorize?client_id=923915598247915540&permissions=8&scope=bot%20applications.commands")
