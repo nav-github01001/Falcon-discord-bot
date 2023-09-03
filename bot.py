@@ -18,7 +18,7 @@ COGS_LIST = (
     "cogs.fun",
     "cogs.information",
     "cogs.moderation",
-    "cogs.help"
+    "cogs.raidprot"
 )
 EXTENSION_LIST = ("jishaku",)
 
