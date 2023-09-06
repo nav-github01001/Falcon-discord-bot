@@ -6,6 +6,7 @@ import typing
 import discord
 from discord.ext import commands
 import config
+
 logger = logging.getLogger("discord")
 logger.setLevel(logging.DEBUG)
 handler = logging.FileHandler(filename="./FalconBot.log", encoding="utf-8", mode="w")
@@ -14,12 +15,7 @@ handler.setFormatter(
 )
 logger.addHandler(handler)
 
-COGS_LIST = (
-    "cogs.fun",
-    "cogs.information",
-    "cogs.moderation",
-    "cogs.raidprot"
-)
+COGS_LIST = ("cogs.fun", "cogs.information", "cogs.moderation", "cogs.antiraid")
 EXTENSION_LIST = ("jishaku",)
 
 
@@ -31,13 +27,12 @@ class FalconClient(commands.Bot):
             help_command=None,
         )
 
-    async def on_command_error(self, context, exception:Exception) -> None:
+    async def on_command_error(self, context, exception: Exception) -> None:
         error = discord.Embed(
             color=0xFF0000, title="Error!", description=exception
         ).set_footer(text="If this occurs more often, contact support")
         await context.send(embed=error)
-        
-
+    
 
 intents = discord.Intents.all()
 client = FalconClient(intents=intents)
