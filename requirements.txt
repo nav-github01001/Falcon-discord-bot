@@ -2,4 +2,3 @@ discord.py[speed]
 pynacl 
 git+https://github.com/Gorialis/jishaku
 wavelink
-asyncpg
